@@ -154,6 +154,8 @@ module Sequel
         opts = server_opts(server)
         conn = if jndi?
           get_connection_from_jndi
+        elsif !opts[:datasource].nil?
+          conn = opts[:datasource].connection
         else
           args = [uri(opts)]
           args.concat([opts[:user], opts[:password]]) if opts[:user] && opts[:password]
