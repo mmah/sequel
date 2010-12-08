@@ -93,7 +93,15 @@ module Sequel
         
         # Literalize strings similar to the native postgres adapter
         def literal_string(v)
-          db.synchronize{|c| "'#{c.escape_string(v)}'"}
+           def literal_string(v)
+              db.synchronize{|c| 
+                begin
+                  "'#{c.escape_string(v)}'"
+                rescue
+                  "'#{c.getInnermostDelegate().escape_string(v)}'"
+                end
+                }
+            end
         end
       end
     end
